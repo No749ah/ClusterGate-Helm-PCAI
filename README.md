@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.svg" alt="ClusterGate Logo" width="80" />
+  <img src="logo.png" alt="ClusterGate Logo" width="80" />
 </p>
 
 <h1 align="center">ClusterGate — Helm Chart for HPE PCAI</h1>
