@@ -22,7 +22,7 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 | **Frontend**   | Next.js Dashboard               | 3000         |
 | **PostgreSQL** | Database (16-alpine)            | 5432         |
 
-## Features (v1.2.0)
+## Features (v1.2.1)
 
 - **Route Management** — Create, edit, publish, and deactivate proxy routes with multi-step wizard
 - **`/r/` Proxy Prefix** — All proxied traffic is served under `/r/*`, cleanly separated from API (`/api/*`) and frontend (`/*`)
@@ -39,7 +39,7 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 
 ## Quick Start — PCAI Import
 
-1. Download `clustergate-1.2.0.tgz` from this repo
+1. Download `clustergate-1.2.1.tgz` from this repo
 2. In PCAI, click **Import Framework**
 3. Upload the `.tgz` file
 4. Configure the values (especially secrets) and deploy
@@ -198,6 +198,7 @@ All values are configurable via `values.yaml`:
 
 | Chart Version | App Version | Notes |
 |---------------|-------------|-------|
+| 1.2.1         | 1.2.1       | Fix analytics, Prisma-based backups, sidebar categories, paginated logs |
 | 1.2.0         | 1.2.0       | `/r/` proxy prefix, 2FA, analytics, backups, Swagger, tag filtering |
 | 1.1.2         | 1.1.2       | Rate limiting, uptime tracking, UX improvements |
 | 1.1.1         | 1.1.1       | Security hardening, frontend bug fixes |
