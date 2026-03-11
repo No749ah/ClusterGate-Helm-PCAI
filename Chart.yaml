@@ -1,0 +1,12 @@
+apiVersion: v2
+name: clustergate
+description: ClusterGate - Kubernetes Routing Gateway Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - gateway
+  - routing
+  - kubernetes
+  - proxy
+  - api-gateway

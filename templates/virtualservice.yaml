@@ -1,0 +1,59 @@
+{{- if .Values.ezua.virtualService.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "clustergate.labels" . | nindent 4 }}
+    {{- include "hpe-ezua.labels" . | nindent 4 }}
+spec:
+  hosts:
+  - {{ .Values.ezua.virtualService.endpoint | quote }}
+  gateways:
+  - {{ .Values.ezua.virtualService.istioGateway }}
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - {{ .Values.ezua.virtualService.endpoint }}
+    route:
+    - destination:
+        host: {{ .Release.Name }}-frontend.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.frontend.service.port }}
+  http:
+  # Backend API routes
+  - match:
+    - uri:
+        prefix: /api/
+    route:
+    - destination:
+        host: {{ .Release.Name }}-backend.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.backend.service.port }}
+  # Metrics endpoint
+  - match:
+    - uri:
+        exact: /metrics
+    route:
+    - destination:
+        host: {{ .Release.Name }}-backend.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.backend.service.port }}
+  # Proxy catch-all (non-API traffic routed to backend for proxying)
+  - match:
+    - uri:
+        prefix: /proxy/
+    route:
+    - destination:
+        host: {{ .Release.Name }}-backend.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.backend.service.port }}
+  # Frontend (default)
+  - route:
+    - destination:
+        host: {{ .Release.Name }}-frontend.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: {{ .Values.frontend.service.port }}
+{{- end }}

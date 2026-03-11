@@ -1,0 +1,134 @@
+# =============================================================================
+# ClusterGate Helm Values — PCAI Compatible
+# =============================================================================
+
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+
+# -----------------------------------------------------------------------------
+# HPE PCAI / EZUA Integration
+# -----------------------------------------------------------------------------
+ezua:
+  virtualService:
+    enabled: true
+    endpoint: "clustergate.${DOMAIN_NAME}"
+    istioGateway: "istio-system/ezaf-gateway"
+
+# -----------------------------------------------------------------------------
+# Backend
+# -----------------------------------------------------------------------------
+backend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/no749ah/clustergate-backend
+    tag: "latest"
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 3001
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  autoscaling:
+    enabled: false
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  env:
+    NODE_ENV: production
+    PORT: "3001"
+    JWT_EXPIRES_IN: "7d"
+    PROXY_TIMEOUT: "30000"
+    LOG_LEVEL: info
+    METRICS_ENABLED: "true"
+    LOG_RETENTION_DAYS: "90"
+    ALLOWED_ORIGINS: "https://clustergate.${DOMAIN_NAME}"
+  secrets:
+    jwtSecret: "CHANGE_ME_JWT_SECRET"
+    metricsSecret: "CHANGE_ME_METRICS_SECRET"
+  logs:
+    storageSize: "2Gi"
+
+# -----------------------------------------------------------------------------
+# Frontend
+# -----------------------------------------------------------------------------
+frontend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/no749ah/clustergate-frontend
+    tag: "latest"
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  env:
+    NEXT_PUBLIC_API_URL: "https://clustergate.${DOMAIN_NAME}"
+    NEXT_PUBLIC_APP_NAME: "ClusterGate"
+
+# -----------------------------------------------------------------------------
+# PostgreSQL
+# -----------------------------------------------------------------------------
+postgres:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: IfNotPresent
+  service:
+    port: 5432
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: "20Gi"
+    accessMode: ReadWriteOnce
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  credentials:
+    username: clustergate
+    password: "CHANGE_ME_PG_PASSWORD"
+    database: clustergate
+
+# -----------------------------------------------------------------------------
+# Service Account & RBAC
+# -----------------------------------------------------------------------------
+serviceAccount:
+  create: true
+  name: clustergate-backend
+  annotations: {}
+
+rbac:
+  create: true
+
+# -----------------------------------------------------------------------------
+# Network Policies
+# -----------------------------------------------------------------------------
+networkPolicy:
+  enabled: false
+
+# -----------------------------------------------------------------------------
+# Monitoring
+# -----------------------------------------------------------------------------
+monitoring:
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+    path: /metrics
+    namespace: monitoring
