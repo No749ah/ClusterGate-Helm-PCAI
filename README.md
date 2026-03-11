@@ -28,12 +28,13 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 - **`/r/` Proxy Prefix** — All proxied traffic is served under `/r/*`, cleanly separated from API (`/api/*`) and frontend (`/*`)
 - **Two-Factor Authentication** — TOTP-based 2FA with recovery codes for admin accounts
 - **Analytics Dashboard** — Latency trends, error rates, traffic heatmap, slowest routes
-- **Database Backup & Restore** — Create, download, restore, and manage PostgreSQL backups from the UI
+- **Database Backup & Restore** — Create, download, restore, and manage backups from the UI (Prisma-based JSON export, no pg_dump needed)
 - **API Key Management** — Per-route API keys with expiry and usage tracking
 - **Health Checks** — Automated uptime monitoring with cron-based checks every 5 minutes
 - **Audit Logging** — Full audit trail for all administrative actions
 - **Swagger/OpenAPI** — Interactive API docs at `/api/docs`
 - **Notifications** — In-app notification system
+- **In-App Updates** — One-click updates that pull new container images and roll out deployments
 - **Dark Mode** — Default dark theme with light mode toggle
 
 ## Quick Start — PCAI Import
