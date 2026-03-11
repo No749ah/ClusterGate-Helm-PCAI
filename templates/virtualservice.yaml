@@ -44,7 +44,7 @@ spec:
   # Proxy catch-all (non-API traffic routed to backend for proxying)
   - match:
     - uri:
-        prefix: /proxy/
+        prefix: /r/
     route:
     - destination:
         host: {{ .Release.Name }}-backend.{{ .Release.Namespace }}.svc.cluster.local
