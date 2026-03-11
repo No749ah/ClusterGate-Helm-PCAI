@@ -8,6 +8,8 @@ metadata:
     app: {{ .Release.Name }}-postgres
     {{- include "clustergate.labels" . | nindent 4 }}
     {{- include "hpe-ezua.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/resource-policy: keep
 spec:
   accessModes:
     - {{ .Values.postgres.persistence.accessMode }}
