@@ -45,7 +45,7 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 
 ## Quick Start — PCAI Import
 
-1. Download `clustergate-1.2.1.tgz` from this repo
+1. Download `clustergate-1.3.0.tgz` from this repo
 2. In PCAI, click **Import Framework**
 3. Upload the `.tgz` file
 4. Configure the values (especially secrets) and deploy
