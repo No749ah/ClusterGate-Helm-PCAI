@@ -22,7 +22,7 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 | **Frontend**   | Next.js Dashboard               | 3000         |
 | **PostgreSQL** | Database (16-alpine)            | 5432         |
 
-## Features (v1.3.0)
+## Features (v1.3.1)
 
 - **Route Management** — Create, edit, publish, and deactivate proxy routes with multi-step wizard
 - **`/r/` Proxy Prefix** — All proxied traffic is served under `/r/*`, cleanly separated from API (`/api/*`) and frontend (`/*`)
@@ -42,10 +42,14 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 - **Notifications** — In-app notification system
 - **In-App Updates** — One-click updates that pull new container images and roll out deployments
 - **Dark Mode** — Default dark theme with light mode toggle
+- **Bulk Route Operations** — Publish, deactivate, or delete multiple routes at once
+- **Scheduled Backups** — Automated cron-based backups with configurable retention
+- **Dashboard Sparklines** — Inline trend charts on stat cards with period-over-period comparison
+- **Circuit Breaker Badges** — Visual CB state indicators in routes list
 
 ## Quick Start — PCAI Import
 
-1. Download `clustergate-1.3.0.tgz` from this repo
+1. Download `clustergate-1.3.1.tgz` from this repo
 2. In PCAI, click **Import Framework**
 3. Upload the `.tgz` file
 4. Configure the values (especially secrets) and deploy
@@ -134,6 +138,9 @@ All values are configurable via `values.yaml`:
 | `backend.env.LOG_LEVEL` | Log level | `info` |
 | `backend.env.PROXY_TIMEOUT` | Proxy timeout (ms) | `30000` |
 | `backend.env.LOG_RETENTION_DAYS` | Log retention | `90` |
+| `backend.env.BACKUP_CRON_ENABLED` | Enable scheduled backups | `false` |
+| `backend.env.BACKUP_CRON_SCHEDULE` | Backup cron schedule | `0 3 * * *` |
+| `backend.env.BACKUP_RETENTION_COUNT` | Max backups to retain | `10` |
 | `backend.autoscaling.enabled` | Enable HPA | `false` |
 
 ### Frontend
@@ -206,6 +213,7 @@ All values are configurable via `values.yaml`:
 
 | Chart Version | App Version | Notes |
 |---------------|-------------|-------|
+| 1.3.1         | 1.3.1       | Bulk route ops, scheduled backups, dashboard sparklines, analytics indexes, CB badges |
 | 1.3.0         | 1.3.0       | WebSocket proxy, load balancing, circuit breaker, route groups, transforms, multi-tenant |
 | 1.2.1         | 1.2.1       | Fix analytics, Prisma-based backups, sidebar categories, paginated logs |
 | 1.2.0         | 1.2.0       | `/r/` proxy prefix, 2FA, analytics, backups, Swagger, tag filtering |
