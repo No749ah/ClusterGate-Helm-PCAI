@@ -22,10 +22,16 @@ This Helm chart deploys **ClusterGate** on HPE PCAI (formerly EZUA) using the **
 | **Frontend**   | Next.js Dashboard               | 3000         |
 | **PostgreSQL** | Database (16-alpine)            | 5432         |
 
-## Features (v1.2.1)
+## Features (v1.3.0)
 
 - **Route Management** — Create, edit, publish, and deactivate proxy routes with multi-step wizard
 - **`/r/` Proxy Prefix** — All proxied traffic is served under `/r/*`, cleanly separated from API (`/api/*`) and frontend (`/*`)
+- **WebSocket Proxy** — Native WebSocket upgrade support for WS/WSS routes
+- **Load Balancing** — Round-robin, weighted, and failover strategies with multiple targets per route
+- **Circuit Breaker** — Automatic failure detection (CLOSED/OPEN/HALF_OPEN) with configurable thresholds
+- **Route Groups** — Organize routes with shared path prefixes and inherited defaults
+- **Request/Response Transforms** — Set/remove headers, rewrite JSON bodies, map status codes
+- **Multi-Tenant Organizations** — Organizations with teams, role-based membership, route scoping
 - **Two-Factor Authentication** — TOTP-based 2FA with recovery codes for admin accounts
 - **Analytics Dashboard** — Latency trends, error rates, traffic heatmap, slowest routes
 - **Database Backup & Restore** — Create, download, restore, and manage backups from the UI (Prisma-based JSON export, no pg_dump needed)
@@ -91,8 +97,10 @@ The chart follows HPE PCAI conventions:
 | Route Detail | `/routes/[id]` | View route config, test panel, health checks |
 | Create Route | `/routes/new` | Multi-step route creation wizard |
 | Edit Route | `/routes/[id]/edit` | Edit existing route configuration |
+| Route Groups | `/groups` | Organize routes with shared prefixes |
 | Analytics | `/analytics` | Latency, error rate, traffic heatmap, status distribution |
 | Logs | `/logs` | Request logs with filtering |
+| Organizations | `/organizations` | Multi-tenant organization management |
 | Audit | `/audit` | Audit trail for admin actions |
 | Users | `/users` | User management |
 | Backups | `/backups` | Database backup & restore |
@@ -198,6 +206,7 @@ All values are configurable via `values.yaml`:
 
 | Chart Version | App Version | Notes |
 |---------------|-------------|-------|
+| 1.3.0         | 1.3.0       | WebSocket proxy, load balancing, circuit breaker, route groups, transforms, multi-tenant |
 | 1.2.1         | 1.2.1       | Fix analytics, Prisma-based backups, sidebar categories, paginated logs |
 | 1.2.0         | 1.2.0       | `/r/` proxy prefix, 2FA, analytics, backups, Swagger, tag filtering |
 | 1.1.2         | 1.1.2       | Rate limiting, uptime tracking, UX improvements |
